@@ -20,7 +20,7 @@ defmodule HabitsTracker.MixProject do
   def application do
     [
       mod: {HabitsTracker.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :oauth2]
     ]
   end
 
@@ -49,7 +49,8 @@ defmodule HabitsTracker.MixProject do
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:bcrypt_elixir, "~> 2.0"}
+      {:bcrypt_elixir, "~> 2.0"},
+      {:oauth2, "~> 2.0"}
     ]
   end
 
