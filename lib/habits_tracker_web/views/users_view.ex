@@ -13,4 +13,10 @@ defmodule HabitsTrackerWeb.UsersView do
       }
     }
   end
+
+  def render("auth_user.json", %{
+        token: token
+      }) do
+    token
+  end
 end

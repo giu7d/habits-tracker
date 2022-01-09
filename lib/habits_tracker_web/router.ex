@@ -18,6 +18,10 @@ defmodule HabitsTrackerWeb.Router do
     pipe_through :api
 
     post "/users", UsersController, :create
+
+    get "/users/auth/:provider", UsersController, :auth
+
+    get "/users/auth/:provider/callback", UsersController, :auth_callback
   end
 
   if Mix.env() in [:dev, :test] do
