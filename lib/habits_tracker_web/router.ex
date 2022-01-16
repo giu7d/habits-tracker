@@ -17,8 +17,6 @@ defmodule HabitsTrackerWeb.Router do
   scope "/api", HabitsTrackerWeb do
     pipe_through :api
 
-    post "/users", UsersController, :create
-
     get "/users/auth/:provider", UsersController, :auth
 
     get "/users/auth/:provider/callback", UsersController, :auth_callback

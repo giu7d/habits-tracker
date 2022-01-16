@@ -1,26 +1,26 @@
 defmodule HabitsTrackerWeb.UsersController do
   use HabitsTrackerWeb, :controller
 
-  alias HabitsTracker.Models.User
-  alias HabitsTracker.Provider.OAuth
-
-  def create(conn, params) do
-    with {:ok, %User{} = user} <- HabitsTracker.create_user(params) do
-      conn
-      |> put_status(:created)
-      |> render("create_user.json", %{user: user})
-    end
+  def auth_callback(conn, _params) do
+    redirect(conn, external: HabitsTracker.auth_callback_user())
   end
 
-  def auth(conn, _params) do
-    redirect(conn, external: OAuth.GitHub.authorize_url!())
-  end
-
-  def auth_callback(conn, %{"code" => code}) do
+  def auth(conn, %{"code" => code}) do
     with {:ok, token} <- HabitsTracker.auth_user(%{code: code}) do
       conn
-      |> put_status(:created)
+      |> put_status(200)
       |> render("auth_user.json", %{token: token})
+    else
+      {:error, _} ->
+        conn
+        |> put_status(403)
+        |> render("auth_unauthorized.json")
     end
+  end
+
+  def auth(conn, _) do
+    conn
+    |> put_status(400)
+    |> render("auth_bad_request.json")
   end
 end

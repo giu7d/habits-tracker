@@ -1,22 +1,19 @@
 defmodule HabitsTrackerWeb.UsersView do
-  alias HabitsTracker.Models.User
-
-  def render("create_user.json", %{
-        user: %User{} = user
-      }) do
-    %{
-      message: "User created",
-      user: %{
-        id: user.id,
-        name: user.name,
-        email: user.email
-      }
-    }
-  end
-
   def render("auth_user.json", %{
         token: token
       }) do
     token
+  end
+
+  def render("auth_unauthorized.json", _) do
+    %{
+      message: "Authorization token is undefined or invalid"
+    }
+  end
+
+  def render("auth_bad_request.json", _) do
+    %{
+      message: "Missing url parameter: code"
+    }
   end
 end

@@ -29,6 +29,7 @@ defmodule HabitsTracker.Provider.OAuth.GitHub do
   def get_token!(params \\ [], headers \\ [], opts \\ []) do
     client()
     |> OAuth2.Client.get_token!(params, headers, opts)
+    |> format_token()
   end
 
   def authorize_url(client, params) do
@@ -39,5 +40,20 @@ defmodule HabitsTracker.Provider.OAuth.GitHub do
     client
     |> put_header("accept", "application/json")
     |> OAuth2.Strategy.AuthCode.get_token(params, headers)
+  end
+
+  defp format_token(%OAuth2.Client{
+         token: %OAuth2.AccessToken{
+           access_token: token,
+           token_type: token_type,
+           expires_at: expires_at
+         }
+       })
+       when token != nil do
+    {:ok, %{token: token, token_type: token_type, expires_at: expires_at}}
+  end
+
+  defp format_token(_client) do
+    {:error, :not_found}
   end
 end
